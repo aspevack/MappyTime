@@ -48,8 +48,8 @@ def mapview():
     # creating a map in the view
 	sndmap = Map(
 		identifier="sndmap",
-		lat= 39.5,
-		lng= -98.35,
+		lat= 0,
+		lng= 0,
 		zoom = 3,
 		style = "height: 100%; width: 100%; top:0; left:0; position:absolute; z-index:200",
 		markers= {'http://maps.google.com/mapfiles/ms/icons/green-dot.png': mapData}
