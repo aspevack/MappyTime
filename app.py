@@ -57,16 +57,12 @@ def mapview():
 
 	urlData = request.form.get('short')
 	if urlData not in db:
-		db[urlData] = render_template('map.html', sndmap=sndmap)
+		db[urlData] = render_template('map.html', urldata= urlData, sndmap=sndmap)
 
-	return render_template('map.html', sndmap=sndmap)
+	return render_template('map.html',urldata= urlData, sndmap=sndmap)
 
 @app.route("/<url>", methods=['GET'])
 def load_redirect(url):
-    """
-    Redirect the request to the URL associated =short=, otherwise return 404
-    NOT FOUND
-    """
     print url
 
     if url in db:
