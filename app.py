@@ -37,6 +37,7 @@ def allowed_file(filename):
 def upload():
     return flask.render_template('upload.html')
 
+
 @app.route('/about')
 def about():
     return flask.render_template('about.html')

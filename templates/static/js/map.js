@@ -1,6 +1,6 @@
 
 function initMap() {
-	var map = new google.maps.Map(document.getElementById('map'), {
+  var map = new google.maps.Map(document.getElementById('map'), {
 	});
 	//data is defined by loading a geoJSON in the HTML page
 	//map.data.addGeoJson(mapData);
@@ -24,6 +24,7 @@ function initMap() {
 	for (var i = 0; i < mapData.length; i++) {
     	a = mapData[i][0];
     	b = mapData[i][1];
+    	//console.log(a,b)
    		point = new google.maps.LatLng(a, b);
     	bounds.extend(point);
 	}
