@@ -17,7 +17,6 @@
     <link href="static/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="static/css/map.css" rel="stylesheet">
     <script src="static/js/ie-emulation-modes-warning.js"></script>
-    {{sndmap.js}}
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -54,8 +53,7 @@
       <div class="page-header">
         <h1><br>Your Map!</h1>
       </div>
-      <div id="map">
-      {{sndmap.html}}</div>     
+      <div id="map"></div>     
 		</div>
 
     
@@ -78,13 +76,12 @@
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="static/js/ie10-viewport-bug-workaround.js"></script>
-    <!--
-    <script src="data/mobile_food.json"/>
+    <script>
+      var mapData = {{mapData}};
+    </script>
     <script type = "text/javascript" src="static/js/map.js"></script>
-
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7KTz5r9MVrkGwxJVrGWlmmxnGBCd3o5M&callback=initMap">
-    </script>
- -->   
+    </script>  
   </body>
 </html>

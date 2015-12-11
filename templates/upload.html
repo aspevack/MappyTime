@@ -54,15 +54,16 @@
       <div class="page-header">
         <h1><br>Upload your data n' make a mappy</h1>
       </div>
-			 <form id = 'uploadForm' action='/map' method="POST">
-          <!--
+			 <form id = 'uploadForm' action='/map' method="POST" enctype="multipart/form-data">
           <div>
+            <!--
+            <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
             <label for="fileToUpload">Select your file with locations to map</label>
             <input type="file" name="fileToUpload" id="fileToUpload" required="False"/>
           </div>
-        -->
         <br>
           <div>
+          -->
             <label for="map_point">Enter map data here: </label> 
 
             <input type="text" name="mappoints" id= "map_point" class = "map" autocorrect="off" class="flush-bottom">

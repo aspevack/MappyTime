@@ -2,8 +2,9 @@
 import shelve
 from subprocess import check_output
 import flask
-from flask import request, Flask, render_template, jsonify, abort, redirect
+from flask import request, Flask, render_template, jsonify, abort, redirect, url_for
 from os import environ
+from werkzeug import secure_filename
 
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
@@ -14,7 +15,11 @@ import sys
 import json
 import hashlib
 
+UPLOAD_FOLDER = 'uploads'
+allowed_extensions = set(['csv'])
+
 app = Flask(__name__, static_folder="templates/static")
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 GoogleMaps(app)
 app.debug = True
 
@@ -24,47 +29,51 @@ db = shelve.open("map.db")
 def load_root():
     return flask.render_template('index.html')
 
+def allowed_file(filename):
+    return "." in filename and \
+        filename.rsplit('.',1)[1] in allowed_extensions
+
 @app.route('/upload')
 def upload():
     return flask.render_template('upload.html')
-'''
-def load_file(name=None):
-    url = 'public_html/upload.html'
-    f = open(url, 'r')
-    raw_data = f.read()
-    return raw_data
-    '''
 
 @app.route('/about')
 def about():
     return flask.render_template('about.html')
 
 @app.route("/map",methods=['POST'])
-def mapview():
-	mapData = request.form.get('mappoints')
-	mapData = eval(mapData)
-	print mapData
+def map():
+    mapData = request.form.get('mappoints')
+    mapData = mapData.split("),(")
+    for i in range(len(mapData)):
+        mapData[i] = mapData[i].strip(')').strip('(')
+        mapData[i]=mapData[i].split(',')
+        mapData[i][0]=float(mapData[i][0])
+        mapData[i][1]=float(mapData[i][1])
+    print mapData
 
-    # creating a map in the view
-	sndmap = Map(
-		identifier="sndmap",
-		lat= 0,
-		lng= 0,
-		zoom = 3,
-		style = "height: 100%; width: 100%; top:0; left:0; position:absolute; z-index:200",
-		markers= {'http://maps.google.com/mapfiles/ms/icons/green-dot.png': mapData}
-	)
 
-	urlData = request.form.get('short')
-	if urlData not in db:
-		db[urlData] = render_template('map.html', urldata= urlData, sndmap=sndmap)
+    urlData = request.form.get('short')
+    if urlData not in db:
+        db[urlData] = render_template('map.html', urldata= urlData, mapData=mapData)
+    return render_template('map.html',urldata= urlData, mapData=mapData)
+    
 
-	return render_template('map.html',urldata= urlData, sndmap=sndmap)
+'''
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['fileToUpload']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            print os.path   
+            print os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            '''
+
 
 @app.route("/<url>", methods=['GET'])
 def load_redirect(url):
     print url
-
     if url in db:
         return db[url]
     else:
